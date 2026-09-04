@@ -5,228 +5,69 @@
 
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
     }
 
     body {
       font-family: Arial, sans-serif;
-      width: 100%;
+      margin: 0;
       min-height: 100vh;
 
       display: flex;
       justify-content: center;
       align-items: center;
 
-      padding: 20px;
-
-      background:
-        radial-gradient(circle at top left, #dbeafe, transparent 40%),
-        radial-gradient(circle at bottom right, #e0e7ff, transparent 40%),
-        #f1f5f9;
-
-      color: #1e293b;
+      background-color: #f5f5f5;
     }
 
-    /* Main Card */
     .converter-box {
-      width: 100%;
-      max-width: 420px;
+      width: 320px;
+      padding: 25px;
 
-      padding: 28px;
+      background-color: white;
+      border-radius: 10px;
 
-      background: rgba(255, 255, 255, 0.92);
-
-      border-radius: 20px;
-
-      border: 1px solid rgba(255, 255, 255, 0.8);
-
-      box-shadow:
-        0 20px 50px rgba(15, 23, 42, 0.18),
-        0 5px 15px rgba(15, 23, 42, 0.08);
-
-      animation: cardAnimation 0.7s ease forwards;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .field {
-      margin-bottom: 20px;
-
-      animation: fadeUp 0.6s ease forwards;
-    }
-
-    .field:nth-child(2) {
-      animation-delay: 0.1s;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-
-      margin-bottom: 8px;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      color: #334155;
-
-      letter-spacing: 0.3px;
-    }
-
-    /* Inputs */
-    input,
-    select {
-      width: 100%;
-
-      padding: 11px 12px;
-
-      border: 1px solid #cbd5e1;
-
-      border-radius: 10px;
-
-      background: #f8fafc;
-
-      color: #334155;
-
-      font-size: 13px;
-
-      outline: none;
-
-      transition: all 0.25s ease;
-    }
-
-    input:hover,
-    select:hover {
-      border-color: #93c5fd;
-      background: white;
-    }
-
-    input:focus,
-    select:focus {
-      background: white;
-
-      border-color: #2563eb;
-
-      box-shadow:
-        0 0 0 4px rgba(37, 99, 235, 0.12);
-
-      transform: translateY(-1px);
-    }
-
-    /* File Input */
-    input[type="file"] {
-      padding: 7px;
-
-      cursor: pointer;
-    }
-
-    input[type="file"]::file-selector-button {
-      border: none;
-
-      padding: 8px 12px;
-
-      margin-right: 10px;
-
-      border-radius: 7px;
-
-      background: #e0ecff;
-
-      color: #2563eb;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition: all 0.25s ease;
-    }
-
-    input[type="file"]::file-selector-button:hover {
-      background: #2563eb;
-
-      color: white;
-
-      transform: translateY(-1px);
-    }
-
-    select {
-      cursor: pointer;
-    }
-
-    /* Button */
-    button {
-      width: 100%;
-
-      padding: 13px;
-
-      border: none;
-
-      border-radius: 11px;
-
-      background: linear-gradient(
-        135deg,
-        #2563eb,
-        #4f46e5
-      );
-
-      color: white;
+      margin-bottom: 7px;
 
       font-size: 14px;
+      font-weight: bold;
+    }
 
-      font-weight: 700;
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 10px;
 
-      letter-spacing: 0.3px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      border: 1px solid #ccc;
+    }
+
+    button {
+      border: none;
+
+      background-color: #007bff;
+      color: white;
 
       cursor: pointer;
-
-      box-shadow:
-        0 10px 20px rgba(37, 99, 235, 0.3);
-
-      transition: all 0.25s ease;
-
-      animation: fadeUp 0.6s ease forwards;
-
-      animation-delay: 0.2s;
-
-      opacity: 0;
     }
 
     button:hover {
-      transform: translateY(-3px);
-
-      box-shadow:
-        0 15px 30px rgba(37, 99, 235, 0.4);
-    }
-
-    button:active {
-      transform: scale(0.98);
-
-      box-shadow:
-        0 6px 15px rgba(37, 99, 235, 0.3);
-    }
-
-    /* Animations */
-
-    @keyframes cardAnimation {
-      from {
-        opacity: 0;
-        transform: translateY(25px) scale(0.96);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -237,18 +78,11 @@
 
     <div class="field">
       <label>Select Image</label>
-
-      <input
-        type="file"
-        id="imageInput"
-        accept="image/*"
-      >
+      <input type="file" id="imageInput" accept="image/*">
     </div>
-
 
     <div class="field">
       <label>Convert To</label>
-
       <select id="formatSelect">
         <option value="image/png">PNG</option>
         <option value="image/jpeg">JPEG</option>
@@ -256,13 +90,9 @@
       </select>
     </div>
 
-
-    <button id="convertBtn">
-      Convert & Download
-    </button>
+    <button id="convertBtn">Convert & Download</button>
 
   </div>
-
 
   <script src="script.js"></script>
 
