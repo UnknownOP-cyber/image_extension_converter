@@ -1,100 +1,1568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      min-height: 100vh;
+    <meta name="description"
+          content="Free online image format converter. Convert PNG, JPEG and WebP images directly in your browser without uploading your files.">
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    <meta name="keywords"
+          content="image converter, PNG converter, JPEG converter, WebP converter, image format converter">
 
-      background-color: #f5f5f5;
-    }
+    <meta name="author"
+          content="Your Name">
 
-    .converter-box {
-      width: 400px;
-      padding: 25px;
+    <meta name="theme-color"
+          content="#2563eb">
 
-      background-color: white;
-      border-radius: 10px;
+    <title>Image Format Converter | Convert PNG, JPEG & WebP</title>
 
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
+    <link rel="manifest" href="manifest.json">
 
-    .field {
-      margin-bottom: 18px;
-    }
+    <style>
+        /* =========================
+           RESET
+        ========================= */
 
-    label {
-      display: block;
-      margin-bottom: 7px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      font-size: 14px;
-      font-weight: bold;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    input,
-    select,
-    button {
-      width: 100%;
-      padding: 10px;
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #0f172a;
+            background: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-      border-radius: 5px;
-      font-size: 14px;
-    }
+        img {
+            max-width: 100%;
+            display: block;
+        }
 
-    input,
-    select {
-      border: 1px solid #ccc;
-    }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-    button {
-      border: none;
+        button,
+        input,
+        select {
+            font: inherit;
+        }
 
-      background-color: #007bff;
-      color: white;
+        /* =========================
+           GLOBAL
+        ========================= */
 
-      cursor: pointer;
-    }
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
 
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+        .section {
+            padding: 90px 0;
+        }
+
+        .section-header {
+            max-width: 680px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 7px 14px;
+            margin-bottom: 14px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: clamp(30px, 5vw, 44px);
+            line-height: 1.15;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-inner {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: 800;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-button {
+            padding: 10px 17px;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white !important;
+        }
+
+        .nav-button:hover {
+            background: #1d4ed8;
+        }
+
+        .menu-button {
+            display: none;
+            border: 0;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+            color: #0f172a;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            position: relative;
+            padding: 95px 0 80px;
+            background:
+                radial-gradient(circle at 10% 20%, #dbeafe 0, transparent 32%),
+                radial-gradient(circle at 90% 70%, #e0e7ff 0, transparent 32%),
+                #f8fafc;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 7vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #0f172a;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero-text {
+            max-width: 680px;
+            margin: 0 auto 30px;
+            color: #64748b;
+            font-size: clamp(15px, 2vw, 18px);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .primary-button,
+        .secondary-button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 48px;
+            padding: 0 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.25s ease;
+        }
+
+        .primary-button {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.22);
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            background: #1d4ed8;
+        }
+
+        .secondary-button {
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #334155;
+        }
+
+        .secondary-button:hover {
+            border-color: #93c5fd;
+            color: #2563eb;
+        }
+
+        /* =========================
+           CONVERTER
+        ========================= */
+
+        .converter-section {
+            background: #ffffff;
+            padding-top: 65px;
+        }
+
+        .converter-wrapper {
+            width: min(680px, 100%);
+            margin: 0 auto;
+        }
+
+        .converter-box {
+            padding: clamp(22px, 5vw, 38px);
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow:
+                0 25px 60px rgba(15, 23, 42, 0.10),
+                0 5px 20px rgba(15, 23, 42, 0.05);
+        }
+
+        .converter-heading {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .converter-heading h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .converter-heading p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input:hover,
+        select:hover {
+            border-color: #93c5fd;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            background: white;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            border: 0;
+            padding: 9px 13px;
+            margin-right: 10px;
+            border-radius: 7px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .convert-button {
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+            transition: 0.25s ease;
+        }
+
+        .convert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 28px rgba(37, 99, 235, 0.32);
+        }
+
+        .convert-button:active {
+            transform: scale(0.99);
+        }
+
+        .privacy-note {
+            margin-top: 17px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 16px;
+            padding: 11px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .status-message.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features-section {
+            background: #f8fafc;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: white;
+            transition: 0.25s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 21px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+           HOW TO USE
+        ========================= */
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .step {
+            position: relative;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 17px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .step h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+           ABOUT / INFO
+        ========================= */
+
+        .info-section {
+            background: #f8fafc;
+        }
+
+        .info-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            align-items: center;
+            padding: clamp(25px, 5vw, 50px);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+        }
+
+        .info-box h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.15;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 11px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .info-list li::before {
+            content: "✓";
+            color: #2563eb;
+            font-weight: 800;
+            margin-right: 8px;
+        }
+
+        .info-visual {
+            min-height: 260px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 30% 30%, #dbeafe, transparent 35%),
+                radial-gradient(circle at 70% 70%, #e0e7ff, transparent 35%),
+                #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .visual-card {
+            width: min(280px, 75%);
+            padding: 25px;
+            border-radius: 16px;
+            background: white;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+        }
+
+        .visual-card-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .visual-card strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .visual-card span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FAQ
+        ========================= */
+
+        .faq-list {
+            max-width: 780px;
+            margin: auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 0;
+            border: 0;
+            background: transparent;
+            color: #0f172a;
+            text-align: left;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .faq-icon {
+            font-size: 22px;
+            color: #2563eb;
+            flex-shrink: 0;
+            transition: 0.2s ease;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 35px 20px 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-section {
+            background: #0f172a;
+            color: white;
+        }
+
+        .contact-content {
+            max-width: 760px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .contact-content .section-tag {
+            background: rgba(255, 255, 255, 0.08);
+            color: #93c5fd;
+        }
+
+        .contact-content h2 {
+            color: white;
+        }
+
+        .contact-content p {
+            color: #94a3b8;
+            margin-bottom: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            padding: 11px 17px;
+            border: 1px solid #334155;
+            border-radius: 9px;
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .social-link:hover {
+            background: #1e293b;
+            border-color: #64748b;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            padding: 24px 0;
+            background: #020617;
+            color: #64748b;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: #cbd5e1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+            .features-grid,
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                width: min(100% - 28px, 1120px);
+            }
+
+            .section {
+                padding: 65px 0;
+            }
+
+            .nav-inner {
+                min-height: 64px;
+            }
+
+            .menu-button {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 64px;
+                left: 0;
+                width: 100%;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 10px 20px 20px;
+                background: white;
+                border-bottom: 1px solid #e2e8f0;
+                box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 12px 0;
+            }
+
+            .nav-button {
+                text-align: center;
+            }
+
+            .hero {
+                padding: 70px 0 60px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .features-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-box {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .primary-button,
+            .secondary-button {
+                width: 100%;
+            }
+
+            .converter-box {
+                border-radius: 15px;
+                padding: 20px 16px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+            .social-links {
+                flex-direction: column;
+            }
+
+            .social-link {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="converter-box">
+    <!-- =========================
+         NAVBAR
+    ========================== -->
 
-    <div class="field">
-      <label>Select Image</label>
-      <input type="file" id="imageInput" accept="image/*">
-    </div>
+    <header class="navbar">
+        <div class="container nav-inner">
 
-    <div class="field">
-      <label>Convert To</label>
-      <select id="formatSelect">
-        <option value="image/png">PNG</option>
-        <option value="image/jpeg">JPEG</option>
-        <option value="image/webp">WebP</option>
-      </select>
-    </div>
+            <a href="#" class="logo">
+                <span class="logo-icon">↻</span>
+                Image Converter
+            </a>
 
-    <button id="convertBtn">Convert & Download</button>
+            <button class="menu-button" id="menuButton" aria-label="Open menu">
+                ☰
+            </button>
 
-  </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#converter">Converter</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-to-use">How It Works</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li>
+                    <a href="#contact" class="nav-button">
+                        Contact
+                    </a>
+                </li>
+            </ul>
 
-  <script src="script.js"></script>
+        </div>
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+
+        <div class="container">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    ⚡ Fast &nbsp;•&nbsp; Free &nbsp;•&nbsp; Browser Based
+                </div>
+
+                <h1>
+                    Convert Your Images
+                    <span>Instantly</span>
+                </h1>
+
+                <p class="hero-text">
+                    Easily convert images between PNG, JPEG and WebP
+                    formats directly in your browser. No complicated
+                    software and no file uploads required.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#converter" class="primary-button">
+                        Start Converting
+                    </a>
+
+                    <a href="#how-to-use" class="secondary-button">
+                        How It Works
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONVERTER
+    ========================== -->
+
+    <section class="section converter-section" id="converter">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="section-tag">
+                    Image Tool
+                </span>
+
+                <h2 class="section-title">
+                    Convert Your Image
+                </h2>
+
+                <p class="section-description">
+                    Select an image, choose your desired format,
+                    and download the converted file.
+                </p>
+
+            </div>
+
+            <div class="converter-wrapper">
+
+                <div class="converter-box">
+
+                    <div class="converter-heading">
+
+                        <h2>Image Format Converter</h2>
+
+                        <p>
+                            PNG, JPEG and WebP conversion in seconds.
+                        </p>
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="imageInput">
+                            Select Image
+                        </label>
+
+                        <input
+                            type="file"
+                            id="imageInput"
+                            accept="image/*"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="formatSelect">
+                            Convert To
+                        </label>
+
+                        <select id="formatSelect">
+
+                            <option value="image/png">
+                                PNG
+                            </option>
+
+                            <option value="image/jpeg">
+                                JPEG
+                            </option>
+
+                            <option value="image/webp">
+                                WebP
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="convert-button"
+                        id="convertBtn"
+                    >
+                        Convert & Download
+                    </button>
+
+
+                    <div
+                        class="status-message"
+                        id="statusMessage"
+                    ></div>
+
+
+                    <p class="privacy-note">
+                        🔒 Your image is processed locally in your browser.
+                        It is not uploaded to a server.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FEATURES
+    ========================== -->
+
+    <section class="section features-section" id="features">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="section-tag">
+                    Why Use It?
+                </span>
+
+                <h2 class="section-title">
+                    Simple, Fast & Private
+                </h2>
+
+                <p class="section-description">
+                    Everything you need for quick image format conversion
+                    without unnecessary complexity.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        ⚡
+                    </div>
+
+                    <h3>
+                        Fast Conversion
+                    </h3>
+
+                    <p>
+                        Convert your images quickly without waiting
+                        for files to be uploaded to a remote server.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        Privacy Focused
+                    </h3>
+
+                    <p>
+                        Your image stays on your device while the
+                        browser performs the conversion locally.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Fully Responsive
+                    </h3>
+
+                    <p>
+                        Use the converter comfortably on phones,
+                        tablets, laptops and desktop computers.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🖼️
+                    </div>
+
+                    <h3>
+                        Multiple Formats
+                    </h3>
+
+                    <p>
+                        Convert images between PNG, JPEG and WebP
+                        formats with a simple selection.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        💻
+                    </div>
+
+                    <h3>
+                        No Software Required
+                    </h3>
+
+                    <p>
+                        Everything works directly inside your modern
+                        web browser.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        ⬇️
+                    </div>
+
+                    <h3>
+                        Instant Download
+                    </h3>
+
+                    <p>
+                        Once conversion is complete, your converted
+                        image is downloaded immediately.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOW TO USE
+    ========================== -->
+
+    <section class="section" id="how-to-use">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="section-tag">
+                    How To Use
+                </span>
+
+                <h2 class="section-title">
+                    Convert an Image in 3 Steps
+                </h2>
+
+                <p class="section-description">
+                    No technical knowledge is required.
+                    Just follow these three simple steps.
+                </p>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Select Your Image
+                    </h3>
+
+                    <p>
+                        Click the file selector and choose the
+                        image you want to convert from your device.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Choose a Format
+                    </h3>
+
+                    <p>
+                        Select PNG, JPEG or WebP as your desired
+                        output image format.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h3>
+                        Convert & Download
+                    </h3>
+
+                    <p>
+                        Click the conversion button and your new
+                        image will be downloaded automatically.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         INFORMATION
+    ========================== -->
+
+    <section class="section info-section">
+
+        <div class="container">
+
+            <div class="info-box">
+
+                <div>
+
+                    <span class="section-tag">
+                        Built For Simplicity
+                    </span>
+
+                    <h2>
+                        Your images stay on your device.
+                    </h2>
+
+                    <p>
+                        This converter uses the HTML5 Canvas API
+                        available in modern browsers to process
+                        your selected image.
+                    </p>
+
+                    <p>
+                        Instead of sending your image to a remote
+                        server, the conversion happens directly
+                        inside your browser.
+                    </p>
+
+                    <ul class="info-list">
+
+                        <li>
+                            No account required
+                        </li>
+
+                        <li>
+                            No complicated interface
+                        </li>
+
+                        <li>
+                            No server upload required
+                        </li>
+
+                        <li>
+                            Simple one-click download
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="info-visual">
+
+                    <div class="visual-card">
+
+                        <div class="visual-card-icon">
+                            🔐
+                        </div>
+
+                        <strong>
+                            Local Processing
+                        </strong>
+
+                        <span>
+                            Your image is processed
+                            inside your browser.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FAQ
+    ========================== -->
+
+    <section class="section" id="faq">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="section-tag">
+                    FAQ
+                </span>
+
+                <h2 class="section-title">
+                    Frequently Asked Questions
+                </h2>
+
+            </div>
+
+
+            <div class="faq-list">
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        <span>
+                            Which image formats are supported?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+                        You can convert images to PNG, JPEG or WebP
+                        using the converter.
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        <span>
+                            Are my images uploaded to a server?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+                        No. The conversion is performed directly
+                        in your browser using JavaScript and the
+                        HTML5 Canvas API.
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        <span>
+                            Does it work on mobile devices?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+                        Yes. The website is designed to work across
+                        smartphones, tablets, laptops and desktop
+                        screens.
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        <span>
+                            What happens when converting transparent
+                            images to JPEG?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+                        JPEG does not support transparency, so transparent
+                        areas are automatically converted to a white
+                        background.
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        <span>
+                            Do I need to install anything?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+                        No. You only need a modern web browser.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT
+    ========================== -->
+
+    <section class="section contact-section" id="contact">
+
+        <div class="container">
+
+            <div class="contact-content">
+
+                <span class="section-tag">
+                    Get In Touch
+                </span>
+
+                <h2 class="section-title">
+                    Connect With Me
+                </h2>
+
+                <p>
+                    Have feedback, suggestions or want to discuss
+                    a project? Feel free to connect with me through
+                    my social profiles.
+                </p>
+
+
+                <div class="social-links">
+
+                    <!-- Replace these links with your real profiles -->
+
+                    <a
+                        href="https://github.com/UnknownOP-cyber"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        GitHub
+                    </a>
+
+                    <a
+                        href="https://www.linkedin.com/in/muhammad-hassan-84471b306/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        LinkedIn
+                    </a>
+
+                    <a
+                        href="https://www.facebook.com/profile.php?id=100051114516355"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        Facebook
+                    </a>
+
+                    <a
+                        href="mailto:hassan512prince@gmail.com"
+                        class="social-link"
+                    >
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="container">
+
+            <p>
+                © <span id="year"></span>
+                <strong>Image Format Converter</strong>.
+                Built with HTML, CSS & JavaScript.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
 
 </body>
 </html>
