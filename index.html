@@ -1,1568 +1,747 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <meta name="description"
-          content="Free online image format converter. Convert PNG, JPEG and WebP images directly in your browser without uploading your files.">
-
-    <meta name="keywords"
-          content="image converter, PNG converter, JPEG converter, WebP converter, image format converter">
-
-    <meta name="author"
-          content="Your Name">
-
-    <meta name="theme-color"
-          content="#2563eb">
-
-    <title>Image Format Converter | Convert PNG, JPEG & WebP</title>
-
-    <link rel="manifest" href="manifest.json">
-
-    <style>
-        /* =========================
-           RESET
-        ========================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            color: #0f172a;
-            background: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-        /* =========================
-           GLOBAL
-        ========================= */
-
-        .container {
-            width: min(1120px, calc(100% - 40px));
-            margin: 0 auto;
-        }
-
-        .section {
-            padding: 90px 0;
-        }
-
-        .section-header {
-            max-width: 680px;
-            margin: 0 auto 50px;
-            text-align: center;
-        }
-
-        .section-tag {
-            display: inline-block;
-            padding: 7px 14px;
-            margin-bottom: 14px;
-            border-radius: 999px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .section-title {
-            font-size: clamp(30px, 5vw, 44px);
-            line-height: 1.15;
-            margin-bottom: 16px;
-            color: #0f172a;
-        }
-
-        .section-description {
-            color: #64748b;
-            font-size: 16px;
-        }
-
-        /* =========================
-           NAVBAR
-        ========================= */
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .nav-inner {
-            min-height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 19px;
-            font-weight: 800;
-            color: #0f172a;
-            white-space: nowrap;
-        }
-
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
-            font-size: 18px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #475569;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: #2563eb;
-        }
-
-        .nav-button {
-            padding: 10px 17px;
-            border-radius: 9px;
-            background: #2563eb;
-            color: white !important;
-        }
-
-        .nav-button:hover {
-            background: #1d4ed8;
-        }
-
-        .menu-button {
-            display: none;
-            border: 0;
-            background: transparent;
-            font-size: 25px;
-            cursor: pointer;
-            color: #0f172a;
-        }
-
-        /* =========================
-           HERO
-        ========================= */
-
-        .hero {
-            position: relative;
-            padding: 95px 0 80px;
-            background:
-                radial-gradient(circle at 10% 20%, #dbeafe 0, transparent 32%),
-                radial-gradient(circle at 90% 70%, #e0e7ff 0, transparent 32%),
-                #f8fafc;
-        }
-
-        .hero-content {
-            max-width: 850px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 14px;
-            border: 1px solid #bfdbfe;
-            border-radius: 999px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 22px;
-        }
-
-        .hero h1 {
-            font-size: clamp(38px, 7vw, 68px);
-            line-height: 1.05;
-            letter-spacing: -2px;
-            color: #0f172a;
-            margin-bottom: 22px;
-        }
-
-        .hero h1 span {
-            color: #2563eb;
-        }
-
-        .hero-text {
-            max-width: 680px;
-            margin: 0 auto 30px;
-            color: #64748b;
-            font-size: clamp(15px, 2vw, 18px);
-        }
-
-        .hero-actions {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .primary-button,
-        .secondary-button {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 48px;
-            padding: 0 22px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            transition: 0.25s ease;
-        }
-
-        .primary-button {
-            background: #2563eb;
-            color: white;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.22);
-        }
-
-        .primary-button:hover {
-            transform: translateY(-2px);
-            background: #1d4ed8;
-        }
-
-        .secondary-button {
-            border: 1px solid #cbd5e1;
-            background: white;
-            color: #334155;
-        }
-
-        .secondary-button:hover {
-            border-color: #93c5fd;
-            color: #2563eb;
-        }
-
-        /* =========================
-           CONVERTER
-        ========================= */
-
-        .converter-section {
-            background: #ffffff;
-            padding-top: 65px;
-        }
-
-        .converter-wrapper {
-            width: min(680px, 100%);
-            margin: 0 auto;
-        }
-
-        .converter-box {
-            padding: clamp(22px, 5vw, 38px);
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            box-shadow:
-                0 25px 60px rgba(15, 23, 42, 0.10),
-                0 5px 20px rgba(15, 23, 42, 0.05);
-        }
-
-        .converter-heading {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .converter-heading h2 {
-            font-size: 25px;
-            margin-bottom: 7px;
-        }
-
-        .converter-heading p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .field {
-            margin-bottom: 20px;
-        }
-
-        .field label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #334155;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 13px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            background: #f8fafc;
-            color: #334155;
-            font-size: 14px;
-            outline: none;
-            transition: 0.2s ease;
-        }
-
-        input:hover,
-        select:hover {
-            border-color: #93c5fd;
-            background: white;
-        }
-
-        input:focus,
-        select:focus {
-            background: white;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
-        }
-
-        input[type="file"] {
-            padding: 8px;
-            cursor: pointer;
-        }
-
-        input[type="file"]::file-selector-button {
-            border: 0;
-            padding: 9px 13px;
-            margin-right: 10px;
-            border-radius: 7px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .convert-button {
-            width: 100%;
-            padding: 14px;
-            border: 0;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
-            transition: 0.25s ease;
-        }
-
-        .convert-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 28px rgba(37, 99, 235, 0.32);
-        }
-
-        .convert-button:active {
-            transform: scale(0.99);
-        }
-
-        .privacy-note {
-            margin-top: 17px;
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .status-message {
-            display: none;
-            margin-top: 16px;
-            padding: 11px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-message.show {
-            display: block;
-        }
-
-        .status-message.success {
-            background: #f0fdf4;
-            color: #15803d;
-        }
-
-        .status-message.error {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-
-        /* =========================
-           FEATURES
-        ========================= */
-
-        .features-section {
-            background: #f8fafc;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .feature-card {
-            padding: 28px;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            background: white;
-            transition: 0.25s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            display: grid;
-            place-items: center;
-            margin-bottom: 18px;
-            border-radius: 12px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-size: 21px;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .feature-card p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        /* =========================
-           HOW TO USE
-        ========================= */
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .step {
-            position: relative;
-            text-align: center;
-            padding: 25px;
-        }
-
-        .step-number {
-            width: 52px;
-            height: 52px;
-            display: grid;
-            place-items: center;
-            margin: 0 auto 17px;
-            border-radius: 50%;
-            background: #2563eb;
-            color: white;
-            font-weight: 800;
-            font-size: 18px;
-        }
-
-        .step h3 {
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .step p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        /* =========================
-           ABOUT / INFO
-        ========================= */
-
-        .info-section {
-            background: #f8fafc;
-        }
-
-        .info-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 45px;
-            align-items: center;
-            padding: clamp(25px, 5vw, 50px);
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            background: white;
-        }
-
-        .info-box h2 {
-            font-size: clamp(28px, 4vw, 40px);
-            line-height: 1.15;
-            margin-bottom: 15px;
-        }
-
-        .info-box p {
-            color: #64748b;
-            font-size: 15px;
-            margin-bottom: 15px;
-        }
-
-        .info-list {
-            list-style: none;
-        }
-
-        .info-list li {
-            margin-bottom: 11px;
-            color: #475569;
-            font-size: 14px;
-        }
-
-        .info-list li::before {
-            content: "✓";
-            color: #2563eb;
-            font-weight: 800;
-            margin-right: 8px;
-        }
-
-        .info-visual {
-            min-height: 260px;
-            display: grid;
-            place-items: center;
-            border-radius: 16px;
-            background:
-                radial-gradient(circle at 30% 30%, #dbeafe, transparent 35%),
-                radial-gradient(circle at 70% 70%, #e0e7ff, transparent 35%),
-                #f8fafc;
-            border: 1px solid #e2e8f0;
-        }
-
-        .visual-card {
-            width: min(280px, 75%);
-            padding: 25px;
-            border-radius: 16px;
-            background: white;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
-        }
-
-        .visual-card-icon {
-            font-size: 45px;
-            margin-bottom: 12px;
-        }
-
-        .visual-card strong {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .visual-card span {
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        /* =========================
-           FAQ
-        ========================= */
-
-        .faq-list {
-            max-width: 780px;
-            margin: auto;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .faq-question {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px 0;
-            border: 0;
-            background: transparent;
-            color: #0f172a;
-            text-align: left;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .faq-icon {
-            font-size: 22px;
-            color: #2563eb;
-            flex-shrink: 0;
-            transition: 0.2s ease;
-        }
-
-        .faq-answer {
-            display: none;
-            padding: 0 35px 20px 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .faq-item.active .faq-answer {
-            display: block;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
-        }
-
-        /* =========================
-           CONTACT
-        ========================= */
-
-        .contact-section {
-            background: #0f172a;
-            color: white;
-        }
-
-        .contact-content {
-            max-width: 760px;
-            margin: auto;
-            text-align: center;
-        }
-
-        .contact-content .section-tag {
-            background: rgba(255, 255, 255, 0.08);
-            color: #93c5fd;
-        }
-
-        .contact-content h2 {
-            color: white;
-        }
-
-        .contact-content p {
-            color: #94a3b8;
-            margin-bottom: 28px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            padding: 11px 17px;
-            border: 1px solid #334155;
-            border-radius: 9px;
-            color: #e2e8f0;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 0.2s ease;
-        }
-
-        .social-link:hover {
-            background: #1e293b;
-            border-color: #64748b;
-        }
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            padding: 24px 0;
-            background: #020617;
-            color: #64748b;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        footer strong {
-            color: #cbd5e1;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 900px) {
-            .features-grid,
-            .steps-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .info-box {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .container {
-                width: min(100% - 28px, 1120px);
-            }
-
-            .section {
-                padding: 65px 0;
-            }
-
-            .nav-inner {
-                min-height: 64px;
-            }
-
-            .menu-button {
-                display: block;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 64px;
-                left: 0;
-                width: 100%;
-                display: none;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                padding: 10px 20px 20px;
-                background: white;
-                border-bottom: 1px solid #e2e8f0;
-                box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 12px 0;
-            }
-
-            .nav-button {
-                text-align: center;
-            }
-
-            .hero {
-                padding: 70px 0 60px;
-            }
-
-            .hero h1 {
-                letter-spacing: -1px;
-            }
-
-            .features-grid,
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .info-box {
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-actions {
-                flex-direction: column;
-            }
-
-            .primary-button,
-            .secondary-button {
-                width: 100%;
-            }
-
-            .converter-box {
-                border-radius: 15px;
-                padding: 20px 16px;
-            }
-
-            .logo {
-                font-size: 16px;
-            }
-
-            .logo-icon {
-                width: 34px;
-                height: 34px;
-            }
-
-            .social-links {
-                flex-direction: column;
-            }
-
-            .social-link {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Converter — Convert, Compress & Resize Images Free</title>
+  <meta name="description" content="Convert PNG, JPEG, WebP and AVIF images directly in your browser. No uploads. No tracking. Resize, compress, batch convert — free and private.">
+  <meta name="keywords" content="image converter, png to webp, jpg converter, webp converter, image compressor, resize image, online image converter">
+  <link rel="canonical" href="https://imgconvert.app/">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Image Converter — Convert & Optimize Images Free">
+  <meta property="og:description" content="Convert, compress and resize images in your browser. No server uploads. Completely private.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://imgconvert.app/">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Image Converter — Convert & Optimize Images Free">
+  <meta name="twitter:description" content="Convert, compress and resize images in your browser. No server uploads.">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><path d='M8 22l6-8 4 5 3-3 5 6H8z' fill='white'/><circle cx='22' cy='10' r='3' fill='white'/></svg>">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JSZip for batch downloads -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Image Converter Home">
+        <img src="assets/icons/icon.png" alt="Profile Picture" width="30" height="30" style="object-fit: cover; border-radius: 8px;">
+        <span>Image Converter</span>
+      </a>
 
-    <!-- =========================
-         NAVBAR
-    ========================== -->
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#converter">Converter</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <header class="navbar">
-        <div class="container nav-inner">
+      <a href="#converter" class="btn btn-primary nav-cta">Start Converting</a>
 
-            <a href="#" class="logo">
-                <span class="logo-icon">↻</span>
-                Image Converter
-            </a>
+    
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
-            <button class="menu-button" id="menuButton" aria-label="Open menu">
-                ☰
-            </button>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav>
+        <a href="#converter">Converter</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a href="#converter" class="btn btn-primary">Start Converting</a>
+      </nav>
+    </div>
+  </header>
 
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#converter">Converter</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-to-use">How It Works</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li>
-                    <a href="#contact" class="nav-button">
-                        Contact
-                    </a>
-                </li>
-            </ul>
-
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container">
+        <div class="hero-content">
+          <div class="privacy-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Your images never leave your device
+          </div>
+          <h1 id="hero-heading">Convert images.<br>Keep your privacy.</h1>
+          <p class="hero-sub">Convert, resize and optimize images directly in your browser — no server uploads, no account, no tracking.</p>
+          <div class="hero-actions">
+            <a href="#converter" class="btn btn-primary btn-lg">Start Converting</a>
+            <a href="#how-it-works" class="btn btn-ghost btn-lg">How It Works</a>
+          </div>
+          <div class="hero-formats">
+            <span>Supports</span>
+            <span class="format-tag">PNG</span>
+            <span class="format-tag">JPEG</span>
+            <span class="format-tag">WebP</span>
+            <span class="format-tag">AVIF</span>
+            <span class="format-tag">GIF</span>
+            <span class="format-tag">BMP</span>
+          </div>
         </div>
-    </header>
-
-
-    <!-- =========================
-         HERO
-    ========================== -->
-
-    <section class="hero">
-
-        <div class="container">
-
-            <div class="hero-content">
-
-                <div class="hero-badge">
-                    ⚡ Fast &nbsp;•&nbsp; Free &nbsp;•&nbsp; Browser Based
-                </div>
-
-                <h1>
-                    Convert Your Images
-                    <span>Instantly</span>
-                </h1>
-
-                <p class="hero-text">
-                    Easily convert images between PNG, JPEG and WebP
-                    formats directly in your browser. No complicated
-                    software and no file uploads required.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="#converter" class="primary-button">
-                        Start Converting
-                    </a>
-
-                    <a href="#how-to-use" class="secondary-button">
-                        How It Works
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
+      </div>
     </section>
 
-
-    <!-- =========================
-         CONVERTER
-    ========================== -->
-
-    <section class="section converter-section" id="converter">
-
-        <div class="container">
-
-            <div class="section-header">
-
-                <span class="section-tag">
-                    Image Tool
-                </span>
-
-                <h2 class="section-title">
-                    Convert Your Image
-                </h2>
-
-                <p class="section-description">
-                    Select an image, choose your desired format,
-                    and download the converted file.
-                </p>
-
-            </div>
-
-            <div class="converter-wrapper">
-
-                <div class="converter-box">
-
-                    <div class="converter-heading">
-
-                        <h2>Image Format Converter</h2>
-
-                        <p>
-                            PNG, JPEG and WebP conversion in seconds.
-                        </p>
-
-                    </div>
-
-                    <div class="field">
-
-                        <label for="imageInput">
-                            Select Image
-                        </label>
-
-                        <input
-                            type="file"
-                            id="imageInput"
-                            accept="image/*"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="formatSelect">
-                            Convert To
-                        </label>
-
-                        <select id="formatSelect">
-
-                            <option value="image/png">
-                                PNG
-                            </option>
-
-                            <option value="image/jpeg">
-                                JPEG
-                            </option>
-
-                            <option value="image/webp">
-                                WebP
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <button
-                        class="convert-button"
-                        id="convertBtn"
-                    >
-                        Convert & Download
-                    </button>
-
-
-                    <div
-                        class="status-message"
-                        id="statusMessage"
-                    ></div>
-
-
-                    <p class="privacy-note">
-                        🔒 Your image is processed locally in your browser.
-                        It is not uploaded to a server.
-                    </p>
-
-                </div>
-
-            </div>
-
+    <!-- CONVERTER -->
+    <section id="converter" class="converter-section" aria-labelledby="converter-heading">
+      <div class="container">
+        <div class="converter-header">
+          <h2 id="converter-heading" class="sr-only">Image Converter Tool</h2>
+          <div class="privacy-indicator" aria-live="polite">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Processed locally in your browser
+          </div>
         </div>
 
-    </section>
-
-
-    <!-- =========================
-         FEATURES
-    ========================== -->
-
-    <section class="section features-section" id="features">
-
-        <div class="container">
-
-            <div class="section-header">
-
-                <span class="section-tag">
-                    Why Use It?
-                </span>
-
-                <h2 class="section-title">
-                    Simple, Fast & Private
-                </h2>
-
-                <p class="section-description">
-                    Everything you need for quick image format conversion
-                    without unnecessary complexity.
-                </p>
-
+        <!-- Upload Area -->
+        <div class="upload-area" id="upload-area" role="button" tabindex="0" aria-label="Upload images: click or drag and drop" aria-describedby="upload-hint">
+          <div class="upload-inner">
+            <div class="upload-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
             </div>
-
-
-            <div class="features-grid">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        ⚡
-                    </div>
-
-                    <h3>
-                        Fast Conversion
-                    </h3>
-
-                    <p>
-                        Convert your images quickly without waiting
-                        for files to be uploaded to a remote server.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🔒
-                    </div>
-
-                    <h3>
-                        Privacy Focused
-                    </h3>
-
-                    <p>
-                        Your image stays on your device while the
-                        browser performs the conversion locally.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        📱
-                    </div>
-
-                    <h3>
-                        Fully Responsive
-                    </h3>
-
-                    <p>
-                        Use the converter comfortably on phones,
-                        tablets, laptops and desktop computers.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🖼️
-                    </div>
-
-                    <h3>
-                        Multiple Formats
-                    </h3>
-
-                    <p>
-                        Convert images between PNG, JPEG and WebP
-                        formats with a simple selection.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        💻
-                    </div>
-
-                    <h3>
-                        No Software Required
-                    </h3>
-
-                    <p>
-                        Everything works directly inside your modern
-                        web browser.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        ⬇️
-                    </div>
-
-                    <h3>
-                        Instant Download
-                    </h3>
-
-                    <p>
-                        Once conversion is complete, your converted
-                        image is downloaded immediately.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         HOW TO USE
-    ========================== -->
-
-    <section class="section" id="how-to-use">
-
-        <div class="container">
-
-            <div class="section-header">
-
-                <span class="section-tag">
-                    How To Use
-                </span>
-
-                <h2 class="section-title">
-                    Convert an Image in 3 Steps
-                </h2>
-
-                <p class="section-description">
-                    No technical knowledge is required.
-                    Just follow these three simple steps.
-                </p>
-
-            </div>
-
-
-            <div class="steps-grid">
-
-                <div class="step">
-
-                    <div class="step-number">
-                        1
-                    </div>
-
-                    <h3>
-                        Select Your Image
-                    </h3>
-
-                    <p>
-                        Click the file selector and choose the
-                        image you want to convert from your device.
-                    </p>
-
-                </div>
-
-
-                <div class="step">
-
-                    <div class="step-number">
-                        2
-                    </div>
-
-                    <h3>
-                        Choose a Format
-                    </h3>
-
-                    <p>
-                        Select PNG, JPEG or WebP as your desired
-                        output image format.
-                    </p>
-
-                </div>
-
-
-                <div class="step">
-
-                    <div class="step-number">
-                        3
-                    </div>
-
-                    <h3>
-                        Convert & Download
-                    </h3>
-
-                    <p>
-                        Click the conversion button and your new
-                        image will be downloaded automatically.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         INFORMATION
-    ========================== -->
-
-    <section class="section info-section">
-
-        <div class="container">
-
-            <div class="info-box">
-
-                <div>
-
-                    <span class="section-tag">
-                        Built For Simplicity
-                    </span>
-
-                    <h2>
-                        Your images stay on your device.
-                    </h2>
-
-                    <p>
-                        This converter uses the HTML5 Canvas API
-                        available in modern browsers to process
-                        your selected image.
-                    </p>
-
-                    <p>
-                        Instead of sending your image to a remote
-                        server, the conversion happens directly
-                        inside your browser.
-                    </p>
-
-                    <ul class="info-list">
-
-                        <li>
-                            No account required
-                        </li>
-
-                        <li>
-                            No complicated interface
-                        </li>
-
-                        <li>
-                            No server upload required
-                        </li>
-
-                        <li>
-                            Simple one-click download
-                        </li>
-
-                    </ul>
-
-                </div>
-
-
-                <div class="info-visual">
-
-                    <div class="visual-card">
-
-                        <div class="visual-card-icon">
-                            🔐
-                        </div>
-
-                        <strong>
-                            Local Processing
-                        </strong>
-
-                        <span>
-                            Your image is processed
-                            inside your browser.
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         FAQ
-    ========================== -->
-
-    <section class="section" id="faq">
-
-        <div class="container">
-
-            <div class="section-header">
-
-                <span class="section-tag">
-                    FAQ
-                </span>
-
-                <h2 class="section-title">
-                    Frequently Asked Questions
-                </h2>
-
-            </div>
-
-
-            <div class="faq-list">
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-
-                        <span>
-                            Which image formats are supported?
-                        </span>
-
-                        <span class="faq-icon">
-                            +
-                        </span>
-
-                    </button>
-
-                    <div class="faq-answer">
-                        You can convert images to PNG, JPEG or WebP
-                        using the converter.
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-
-                        <span>
-                            Are my images uploaded to a server?
-                        </span>
-
-                        <span class="faq-icon">
-                            +
-                        </span>
-
-                    </button>
-
-                    <div class="faq-answer">
-                        No. The conversion is performed directly
-                        in your browser using JavaScript and the
-                        HTML5 Canvas API.
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-
-                        <span>
-                            Does it work on mobile devices?
-                        </span>
-
-                        <span class="faq-icon">
-                            +
-                        </span>
-
-                    </button>
-
-                    <div class="faq-answer">
-                        Yes. The website is designed to work across
-                        smartphones, tablets, laptops and desktop
-                        screens.
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-
-                        <span>
-                            What happens when converting transparent
-                            images to JPEG?
-                        </span>
-
-                        <span class="faq-icon">
-                            +
-                        </span>
-
-                    </button>
-
-                    <div class="faq-answer">
-                        JPEG does not support transparency, so transparent
-                        areas are automatically converted to a white
-                        background.
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-
-                        <span>
-                            Do I need to install anything?
-                        </span>
-
-                        <span class="faq-icon">
-                            +
-                        </span>
-
-                    </button>
-
-                    <div class="faq-answer">
-                        No. You only need a modern web browser.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         CONTACT
-    ========================== -->
-
-    <section class="section contact-section" id="contact">
-
-        <div class="container">
-
-            <div class="contact-content">
-
-                <span class="section-tag">
-                    Get In Touch
-                </span>
-
-                <h2 class="section-title">
-                    Connect With Me
-                </h2>
-
-                <p>
-                    Have feedback, suggestions or want to discuss
-                    a project? Feel free to connect with me through
-                    my social profiles.
-                </p>
-
-
-                <div class="social-links">
-
-                    <!-- Replace these links with your real profiles -->
-
-                    <a
-                        href="https://github.com/UnknownOP-cyber"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="social-link"
-                    >
-                        GitHub
-                    </a>
-
-                    <a
-                        href="https://www.linkedin.com/in/muhammad-hassan-84471b306/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="social-link"
-                    >
-                        LinkedIn
-                    </a>
-
-                    <a
-                        href="https://www.facebook.com/profile.php?id=100051114516355"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="social-link"
-                    >
-                        Facebook
-                    </a>
-
-                    <a
-                        href="mailto:hassan512prince@gmail.com"
-                        class="social-link"
-                    >
-                        Email
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer>
-
-        <div class="container">
-
-            <p>
-                © <span id="year"></span>
-                <strong>Image Format Converter</strong>.
-                Built with HTML, CSS & JavaScript.
+            <p class="upload-title">Drop your images here</p>
+            <p class="upload-or">or</p>
+            <button class="btn btn-secondary" id="browse-btn" type="button">Browse Files</button>
+            <p class="upload-hint" id="upload-hint">PNG, JPEG, WebP, AVIF, GIF, BMP · Up to 50 MB per file</p>
+            <p class="upload-paste-hint">
+              <kbd>Ctrl</kbd>+<kbd>V</kbd> to paste from clipboard
             </p>
-
+          </div>
+          <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp,image/avif,image/gif,image/bmp,image/svg+xml" multiple hidden aria-label="Select image files">
         </div>
 
-    </footer>
+        <!-- Paste notification -->
+        <div class="paste-notice" id="paste-notice" role="status" aria-live="polite" hidden>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          Image pasted from clipboard
+        </div>
 
+        <!-- Error banner -->
+        <div class="error-banner" id="error-banner" role="alert" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+          <span id="error-message"></span>
+          <button class="error-close" aria-label="Dismiss error" id="error-close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
 
-    <script src="script.js"></script>
+        <!-- Image Queue -->
+        <div class="image-queue" id="image-queue" hidden>
+          <div class="queue-header">
+            <h3 class="queue-title" id="queue-count"></h3>
+            <button class="btn btn-ghost btn-sm" id="clear-all-btn" type="button">Clear All</button>
+          </div>
+          <div class="queue-list" id="queue-list" aria-label="Image queue" role="list"></div>
+        </div>
 
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settings-panel" hidden>
+          <!-- Output Format -->
+          <div class="settings-section">
+            <h3 class="settings-label">Output Format</h3>
+            <div class="format-grid" role="radiogroup" aria-label="Output format">
+              <label class="format-option">
+                <input type="radio" name="format" value="webp" checked>
+                <span class="format-card">
+                  <span class="format-name">WebP</span>
+                  <span class="format-desc">Great balance of quality and size for the web</span>
+                </span>
+              </label>
+              <label class="format-option">
+                <input type="radio" name="format" value="jpeg">
+                <span class="format-card">
+                  <span class="format-name">JPEG</span>
+                  <span class="format-desc">Best for photographs and general images</span>
+                </span>
+              </label>
+              <label class="format-option">
+                <input type="radio" name="format" value="png">
+                <span class="format-card">
+                  <span class="format-name">PNG</span>
+                  <span class="format-desc">Lossless · supports transparency</span>
+                </span>
+              </label>
+              <label class="format-option" id="avif-option">
+                <input type="radio" name="format" value="avif">
+                <span class="format-card">
+                  <span class="format-name">AVIF</span>
+                  <span class="format-desc">Excellent compression for modern browsers</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Quality -->
+          <div class="settings-section" id="quality-section">
+            <div class="settings-row">
+              <label class="settings-label" for="quality-slider">Quality</label>
+              <span class="quality-value" id="quality-value">85%</span>
+            </div>
+            <input type="range" id="quality-slider" min="1" max="100" value="85" class="quality-slider" aria-label="Image quality" aria-valuemin="1" aria-valuemax="100" aria-valuenow="85">
+            <p class="settings-hint">Lower = smaller file · Higher = better quality</p>
+          </div>
+
+          <!-- Resize -->
+          <div class="settings-section">
+            <h3 class="settings-label">Resize</h3>
+            <div class="resize-presets" id="resize-presets">
+              <button class="preset-btn active" data-preset="original" type="button">Original</button>
+              <button class="preset-btn" data-preset="1920x1080" type="button">1920×1080</button>
+              <button class="preset-btn" data-preset="1280x720" type="button">1280×720</button>
+              <button class="preset-btn" data-preset="1080x1080" type="button">1080×1080</button>
+              <button class="preset-btn" data-preset="800x600" type="button">800×600</button>
+              <button class="preset-btn" data-preset="custom" type="button">Custom</button>
+            </div>
+            <div class="resize-inputs" id="resize-inputs">
+              <div class="dimension-input">
+                <label for="width-input">Width</label>
+                <input type="number" id="width-input" min="1" max="16000" placeholder="auto" aria-label="Width in pixels">
+                <span>px</span>
+              </div>
+              <div class="dimension-lock" id="aspect-lock" title="Lock aspect ratio" role="button" tabindex="0" aria-label="Lock aspect ratio" aria-pressed="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="lock-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+              <div class="dimension-input">
+                <label for="height-input">Height</label>
+                <input type="number" id="height-input" min="1" max="16000" placeholder="auto" aria-label="Height in pixels">
+                <span>px</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advanced Settings -->
+          <details class="advanced-details" id="advanced-settings">
+            <summary class="advanced-summary">
+              <span>Advanced Settings</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="advanced-content">
+
+              <!-- Target Size -->
+              <div class="settings-section">
+                <h3 class="settings-label">Target File Size <span class="badge">Approximation</span></h3>
+                <p class="settings-hint">The converter will try to get close to this target. Exact results may vary.</p>
+                <div class="target-size-options" role="radiogroup" aria-label="Target file size">
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="none" checked>
+                    <span>None</span>
+                  </label>
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="100">
+                    <span>100 KB</span>
+                  </label>
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="200">
+                    <span>200 KB</span>
+                  </label>
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="500">
+                    <span>500 KB</span>
+                  </label>
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="1024">
+                    <span>1 MB</span>
+                  </label>
+                  <label class="target-option">
+                    <input type="radio" name="target-size" value="custom">
+                    <span>Custom</span>
+                  </label>
+                </div>
+                <div class="custom-target-wrap" id="custom-target-wrap" hidden>
+                  <input type="number" id="custom-target-size" min="1" max="50000" placeholder="Size in KB" aria-label="Custom target size in KB">
+                  <span>KB</span>
+                </div>
+              </div>
+
+              <!-- JPEG Background -->
+              <div class="settings-section" id="jpeg-bg-section" hidden>
+                <h3 class="settings-label">JPEG Background</h3>
+                <p class="settings-hint">JPEG doesn't support transparency. Choose a background color for transparent areas.</p>
+                <div class="bg-color-row">
+                  <select id="bg-color-select" aria-label="Background color for JPEG conversion">
+                    <option value="#ffffff">White</option>
+                    <option value="#000000">Black</option>
+                    <option value="custom">Custom color</option>
+                  </select>
+                  <input type="color" id="bg-color-custom" value="#ffffff" aria-label="Custom background color" hidden>
+                </div>
+              </div>
+
+              <!-- Metadata -->
+              <div class="settings-section">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="strip-metadata" checked>
+                  <span class="checkbox-text">
+                    <strong>Remove image metadata</strong>
+                    <span>Strips EXIF and other embedded data from the output. Canvas-based conversion does this by default.</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </details>
+
+          <!-- Estimated Size -->
+          <div class="estimated-size" id="estimated-size" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Estimated output size: <strong id="estimated-value">—</strong>
+          </div>
+
+          <!-- Convert Button -->
+          <div class="convert-actions">
+            <button class="btn btn-primary btn-lg btn-convert" id="convert-btn" type="button">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>
+              Convert
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-section" id="progress-section" hidden role="status" aria-live="polite">
+          <div class="progress-label" id="progress-label">Converting...</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+          </div>
+          <div class="progress-sub" id="progress-sub"></div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section" id="results-section" hidden>
+          <div class="results-header">
+            <h3 class="results-title">Conversion Complete</h3>
+            <button class="btn btn-ghost btn-sm" id="convert-again-btn" type="button">Convert another image</button>
+          </div>
+
+          <!-- Single result comparison -->
+          <div class="comparison" id="comparison" hidden>
+            <div class="comparison-panel">
+              <div class="comparison-label">Original</div>
+              <div class="comparison-img-wrap">
+                <img id="compare-original-img" alt="Original image" loading="lazy">
+              </div>
+              <div class="comparison-info">
+                <span class="compare-format" id="compare-original-format"></span>
+                <span class="compare-size" id="compare-original-size"></span>
+                <span class="compare-dims" id="compare-original-dims"></span>
+              </div>
+            </div>
+            <div class="comparison-divider" aria-hidden="true">
+              <div class="savings-badge" id="savings-badge"></div>
+            </div>
+            <div class="comparison-panel">
+              <div class="comparison-label">Converted</div>
+              <div class="comparison-img-wrap">
+                <img id="compare-converted-img" alt="Converted image" loading="lazy">
+              </div>
+              <div class="comparison-info">
+                <span class="compare-format" id="compare-converted-format"></span>
+                <span class="compare-size" id="compare-converted-size"></span>
+                <span class="compare-dims" id="compare-converted-dims"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results list for multiple -->
+          <div class="results-list" id="results-list" role="list"></div>
+
+          <!-- Download actions -->
+          <div class="download-actions" id="download-actions">
+            <button class="btn btn-primary btn-lg" id="download-single-btn" type="button" hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download
+            </button>
+            <button class="btn btn-primary btn-lg" id="download-all-btn" type="button" hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download All (ZIP)
+            </button>
+            <button class="btn btn-ghost btn-lg" id="clear-results-btn" type="button">Clear All</button>
+          </div>
+        </div>
+
+        <!-- Conversion History -->
+        <div class="history-section" id="history-section" hidden>
+          <div class="history-header">
+            <h3 class="history-title">Recent Conversions</h3>
+            <button class="btn btn-ghost btn-sm" id="clear-history-btn" type="button">Clear History</button>
+          </div>
+          <div class="history-list" id="history-list" role="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features-section" aria-labelledby="features-heading">
+      <div class="container">
+        <h2 id="features-heading">Built around what actually matters</h2>
+        <p class="section-sub">No server side. No accounts. No limits except what your browser can handle.</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <h3>Multiple Formats</h3>
+            <p>Convert between PNG, JPEG, WebP, AVIF, GIF and BMP. Pick the right format for the right job.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Local Processing</h3>
+            <p>Everything runs in your browser using the Canvas API. Your images are never sent anywhere.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <h3>Batch Conversion</h3>
+            <p>Add multiple images at once and convert them all with the same settings. Download as a ZIP.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <h3>Quality Control</h3>
+            <p>Fine-tune the quality slider from 1–100 to balance file size against visual fidelity.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </div>
+            <h3>Image Resizing</h3>
+            <p>Resize to common presets or enter custom dimensions. Aspect ratio locking keeps proportions intact.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3>Target File Size</h3>
+            <p>Want the file under 200 KB? Set a target and the converter iterates quality automatically.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+            </div>
+            <h3>Clipboard Paste</h3>
+            <p>Copy an image anywhere and paste it directly into the converter with Ctrl+V.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18"/></svg>
+            </div>
+            <h3>Before / After Comparison</h3>
+            <p>See the original and converted image side by side with exact file size savings shown.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </div>
+            <h3>Metadata Removal</h3>
+            <p>Canvas-based conversion strips EXIF data by default, helping protect your location and device information.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3>Fast Downloads</h3>
+            <p>Download converted images individually or batch them into a ZIP file — ready immediately.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="how-section" aria-labelledby="how-heading">
+      <div class="container">
+        <h2 id="how-heading">Four steps, done in seconds</h2>
+        <p class="section-sub">No account. No waiting. No file uploads.</p>
+        <div class="steps-grid">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <h3>Add Images</h3>
+            <p>Drag and drop images onto the upload area, click to browse, or paste from your clipboard with Ctrl+V. Add as many as you need.</p>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <h3>Configure</h3>
+            <p>Choose the output format, set a quality level, optionally resize, and use advanced settings for target size or metadata removal.</p>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <h3>Convert</h3>
+            <p>Click Convert. The browser processes your images using the Canvas API — no data leaves your device.</p>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">4</div>
+            <h3>Download</h3>
+            <p>Download each image, or grab all of them in a single ZIP. The original filename is preserved with the new extension.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMAT GUIDE -->
+    <section id="formats" class="formats-section" aria-labelledby="formats-heading">
+      <div class="container">
+        <h2 id="formats-heading">Which format should I use?</h2>
+        <p class="section-sub">A quick guide to choosing the right format for your use case.</p>
+        <div class="format-guide-grid">
+          <div class="format-guide-card">
+            <div class="format-guide-name">PNG</div>
+            <p>Lossless compression. Perfect for images where you need pixel-perfect quality, transparency, or sharp edges.</p>
+            <div class="format-guide-tags">
+              <span>Logos</span><span>Screenshots</span><span>Transparency</span><span>Graphics</span>
+            </div>
+          </div>
+          <div class="format-guide-card">
+            <div class="format-guide-name">JPEG</div>
+            <p>Lossy compression that produces small files at high quality. The universal format for photographs and general use.</p>
+            <div class="format-guide-tags">
+              <span>Photos</span><span>Social media</span><span>Email</span><span>General use</span>
+            </div>
+          </div>
+          <div class="format-guide-card">
+            <div class="format-guide-name">WebP</div>
+            <p>Modern format that supports both lossless and lossy compression. Usually 25–35% smaller than JPEG at the same quality.</p>
+            <div class="format-guide-tags">
+              <span>Websites</span><span>Web apps</span><span>Optimization</span><span>Modern browsers</span>
+            </div>
+          </div>
+          <div class="format-guide-card">
+            <div class="format-guide-name">AVIF</div>
+            <p>Next-generation format with exceptional compression. Significant size reduction over WebP. Supported in modern browsers.</p>
+            <div class="format-guide-tags">
+              <span>Modern web</span><span>High efficiency</span><span>CDN</span><span>Performance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY SECTION -->
+    <section id="privacy" class="privacy-section" aria-labelledby="privacy-heading">
+      <div class="container">
+        <div class="privacy-content">
+          <div class="privacy-text">
+            <h2 id="privacy-heading">Your images stay on your device.</h2>
+            <p>This tool uses the browser's built-in <strong>Canvas API</strong> to read, process and re-encode your images. Every step happens inside your browser tab.</p>
+            <p>Nothing is sent to a server. No file is uploaded. No data is collected. The conversion happens in the same place you read this page.</p>
+            <ul class="privacy-list">
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Images are read directly from your file system
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Processing uses JavaScript and Canvas — no external APIs
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                EXIF data is stripped during Canvas-based re-encoding
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                No tracking scripts or analytics are loaded
+              </li>
+            </ul>
+          </div>
+          <div class="privacy-flow" aria-label="Processing flow diagram">
+            <div class="flow-step">
+              <div class="flow-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <span>Your Device</span>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-step">
+              <div class="flow-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+              <span>Browser</span>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-step">
+              <div class="flow-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+              <span>Canvas API</span>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-step flow-step-result">
+              <div class="flow-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </div>
+              <span>Converted Image</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq-section" aria-labelledby="faq-heading">
+      <div class="container">
+        <h2 id="faq-heading">Frequently asked questions</h2>
+        <div class="faq-list" role="list">
+          <details class="faq-item" role="listitem">
+            <summary>Which image formats are supported?</summary>
+            <div class="faq-answer">
+              <p>You can upload PNG, JPEG, WebP, AVIF, GIF and BMP images. Output formats are PNG, JPEG, WebP and AVIF (AVIF support depends on your browser). SVG is not supported for conversion as it requires different rendering.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Are my images uploaded to a server?</summary>
+            <div class="faq-answer">
+              <p>No. All processing happens in your browser using the Canvas API and JavaScript. Your images are never sent to any server. Nothing leaves your device.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Does it work on mobile?</summary>
+            <div class="faq-answer">
+              <p>Yes. The converter is fully responsive and works on mobile browsers. You can tap to browse your photo library, and everything is touch-friendly. Very large images may take longer on lower-powered devices.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Can I convert multiple images at once?</summary>
+            <div class="faq-answer">
+              <p>Yes. Select multiple files using the file browser or drag multiple images at once. The same settings apply to all images. You can download individual files or all converted images as a ZIP.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Can I resize images?</summary>
+            <div class="faq-answer">
+              <p>Yes. You can choose from common presets (1920×1080, 1280×720, 1080×1080, 800×600) or enter custom dimensions. Aspect ratio locking is available to keep proportions correct.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Can I reduce image file size?</summary>
+            <div class="faq-answer">
+              <p>Yes — in several ways. You can lower the quality slider, switch to a more efficient format like WebP or AVIF, reduce the dimensions, or use the Target File Size feature which automatically adjusts quality to get close to a size you specify.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>What happens to transparent images converted to JPEG?</summary>
+            <div class="faq-answer">
+              <p>JPEG doesn't support transparency. When you select JPEG as the output format, a background color option appears in Advanced Settings. Transparent areas are filled with that color (white by default) before conversion.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Can I use it offline?</summary>
+            <div class="faq-answer">
+              <p>If you've visited the page before, the service worker caches the application files so it may work offline. However, the first load requires an internet connection to load the application.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Is there a file size limit?</summary>
+            <div class="faq-answer">
+              <p>The application allows files up to 50 MB. Very large images (50+ megapixels) may be slow or fail on devices with limited memory, as the Canvas API requires holding the entire image in memory.</p>
+            </div>
+          </details>
+          <details class="faq-item" role="listitem">
+            <summary>Why did the converted image become larger?</summary>
+            <div class="faq-answer">
+              <p>This can happen when converting to a lossless format like PNG, or when the original was heavily compressed and the output format uses less aggressive compression. Try lowering the quality setting or switching to WebP or AVIF for smaller output.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-content">
+          <div class="contact-text">
+            <h2 id="contact-heading">Built by Hassan</h2>
+            <p>I'm a developer focused on building practical, fast and privacy-friendly web tools. This converter was built to solve a real frustration — most online converters upload your files to a server, even when they don't need to.</p>
+            <div class="contact-links">
+              <a href="https://github.com/" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </a>
+              <a href="https://linkedin.com/" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
+              <a href="https://facebook.com/" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook profile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+              </a>
+              <a href="mailto:hassan512prince@gmail.com?subject=Contact from Image Converter" class="contact-link" aria-label="Send email to Hassan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                hassan512prince@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" aria-label="Image Converter Home">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <rect width="32" height="32" rx="8" fill="#2563eb"/>
+              <path d="M7 23l6-8 4 5.5 3-3.5 6 6H7z" fill="white"/>
+              <circle cx="22" cy="10" r="3" fill="white"/>
+            </svg>
+            <span>Image Converter</span>
+          </a>
+          <p>Convert, compress and resize images in your browser. Free, private, fast.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tool</h4>
+          <a href="#converter">Converter</a>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#formats">Format Guide</a>
+        </div>
+        <div class="footer-links">
+          <h4>Info</h4>
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:hassan512prince@gmail.com?subject=Contact from Image Converter">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <span id="footer-year"></span> Image Converter by Hassan. All image processing happens locally in your browser.</p>
+        <div class="footer-privacy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          No uploads · No tracking · No data collection
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
